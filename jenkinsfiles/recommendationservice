@@ -28,13 +28,13 @@ pipeline {
                 script {
                     sh '''
                     #Retrieve an authentication token and authenticate your Docker client to your registry. Use the AWS CLI:
-                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 242201296943.dkr.ecr.us-east-1.amazonaws.com
+                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 239013465815.dkr.ecr.us-east-1.amazonaws.com
 
                     #After the build completes, tag your image so you can push the image to this repository:
-                    docker tag recommendationservice:latest 242201296943.dkr.ecr.us-east-1.amazonaws.com/recommendationservice:${BUILD_NUMBER}
+                    docker tag recommendationservice:latest 239013465815.dkr.ecr.us-east-1.amazonaws.com/recommendationservice:${BUILD_NUMBER}
 
                     #Run the following command to push this image to your newly created AWS repository:
-                    docker push 242201296943.dkr.ecr.us-east-1.amazonaws.com/recommendationservice:${BUILD_NUMBER}
+                    docker push 239013465815.dkr.ecr.us-east-1.amazonaws.com/recommendationservice:${BUILD_NUMBER}
                     '''
                 }
             }
@@ -45,7 +45,7 @@ pipeline {
                 GIT_EMAIL = "[EMAIL_ADDRESS]"
                 GIT_USER_NAME = "shriganeshchoudhari"
                 IMAGE_NAME = "recommendationservice"
-                REPO_URL = "242201296943.dkr.ecr.us-east-1.amazonaws.com/recommendationservice"
+                REPO_URL = "239013465815.dkr.ecr.us-east-1.amazonaws.com/recommendationservice"
                 YAML_FILE = "recommendationservice.yaml"
             }
             steps {
