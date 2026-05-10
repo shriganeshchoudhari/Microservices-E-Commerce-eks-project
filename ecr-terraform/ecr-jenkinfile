@@ -1,0 +1,72 @@
+
+pipeline {
+    agent any
+
+    parameters {
+        choice(
+            name: 'ACTION',
+            choices: ['apply', 'destroy'],
+            description: '🔧 Select the Terraform action to perform (apply = create/update, destroy = delete all)'
+        )
+    }
+
+    stages {
+        stage('Checkout from Git') {
+            steps {
+                echo 'Checking out Git repository...'
+            }
+        }
+
+        stage('Terraform version') {
+            steps {
+                sh 'terraform --version'
+            }
+        }
+
+        stage('Terraform init') {
+            steps {
+                dir('ecr-terraform') {
+                    sh 'terraform init --reconfigure'
+                }
+            }
+        }
+
+        stage('Terraform validate') {
+            steps {
+                dir('ecr-terraform') {
+                    sh 'terraform validate'
+                }
+            }
+        }
+
+        stage('Terraform plan') {
+            steps {
+                dir('ecr-terraform') {
+                    sh 'terraform plan'
+                }
+            }
+        }
+
+        stage('Terraform apply') {
+            when {
+                expression { params.ACTION == 'apply' }
+            }
+            steps {
+                dir('ecr-terraform') {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+
+        stage('Terraform destroy') {
+            when {
+                expression { params.ACTION == 'destroy' }
+            }
+            steps {
+                dir('ecr-terraform') {
+                    sh 'terraform destroy -auto-approve'
+                }
+            }
+        }
+    }
+}
