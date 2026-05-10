@@ -17,15 +17,10 @@ node -v
 npm -v
 
 
-# Install Jenkins
-sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-sudo yum install -y jenkins
-sudo systemctl enable jenkins
-sudo systemctl start jenkins
-#systemctl status jenkins
+# (Jenkins will be started at the end of the script to ensure all tools are in PATH)
 
 # Install Terraform
+sudo yum install -y yum-utils
 sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
 sudo yum install -y terraform
 terraform -v
@@ -108,14 +103,11 @@ rm -rf awscliv2.zip aws
 
 echo "✅ Initialization script completed successfully."
 
-# Install ArgoCD
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-kubectl get pods -n argocd
+# Start Jenkins now that all tools are installed
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum install -y jenkins
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
 
-# Install Prometheus and Grafana using Helm
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-kubectl create namespace prometheus
-helm install prometheus prometheus-community/kube-prometheus-stack -n prometheus
-kubectl get pods -n prometheus
+echo "✅ Initialization script completed successfully."
