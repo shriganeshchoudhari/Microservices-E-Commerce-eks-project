@@ -42,8 +42,8 @@ pipeline {
         stage('Update Deployment file') {
             environment {
                 GIT_REPO_NAME = "Microservices-E-Commerce-eks-project"
-                GIT_EMAIL = "Yaswanth.arumulla@gmail.com"
-                GIT_USER_NAME = "arumullayaswanth"
+                GIT_EMAIL = "[EMAIL_ADDRESS]"
+                GIT_USER_NAME = "shriganeshchoudhari"
                 IMAGE_NAME = "frontend"
                 REPO_URL = "239013465815.dkr.ecr.us-east-1.amazonaws.com/frontend"
                 YAML_FILE = "frontend.yaml"
